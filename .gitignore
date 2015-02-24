@@ -95,3 +95,9 @@ contiki-cc2530dk.lib
 
 # cscope files
 cscope.*
+
+# galileo bsp files
+platform/galileo/bsp/libc/i586-elf/
+platform/galileo/bsp/libc/newlib-2.2.0-1*
+platform/galileo/bsp/grub/src/
+platform/galileo/bsp/grub/bin/
