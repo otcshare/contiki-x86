@@ -100,6 +100,10 @@ cscope.*
 *.swp
 *.swo
 
+# x86 UEFI files
+cpu/x86/uefi/Makefile.uefi
+cpu/x86/uefi/edk2
+
 # galileo bsp files
 platform/galileo/bsp/libc/Makefile.libc
 platform/galileo/bsp/libc/i586-elf/
@@ -109,4 +113,6 @@ platform/galileo/bsp/grub/bin/
 
 # galileo build and debug artefacts
 *.galileo
+*.galileo.dll
+*.galileo.efi
 LOG_OPENOCD
