@@ -29,6 +29,7 @@
  */
 
 #include <stdint.h>
+#include <string.h>
 
 #include "helpers.h"
 
@@ -83,6 +84,8 @@ void
 idt_init(void)
 {
   idtr_t idtr;
+
+  memset(idt, 0, sizeof(idt));
 
   /* Initialize idtr structure */
   idtr.limit = (sizeof(intr_gate_desc_t) * NUM_DESC) - 1;
