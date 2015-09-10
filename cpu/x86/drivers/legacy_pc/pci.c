@@ -68,12 +68,15 @@ pci_config_read(pci_config_addr_t addr)
  *                 firmware.
  * \param c_this   Structure that will be initialized to represent the driver.
  * \param pci_addr PCI base address of device.
+ * \param bar      Base Address Register (BAR) address.
  */
 void
-pci_init_bar0(pci_driver_t *c_this, pci_config_addr_t pci_addr)
+pci_init(pci_driver_t *c_this, pci_config_addr_t pci_addr, uint8_t bar)
 {
-  pci_addr.reg_off = PCI_CONFIG_REG_BAR0;
-  /* The BAR0 value is masked to clear non-address bits. */
-  c_this->mmio = pci_config_read(pci_addr) & ~0xFFF;
+  pci_addr.reg_off = bar;
+
+  /* The BAR value is masked to clear non-address bits. */
+  if (bar == PCI_CONFIG_REG_BAR0 || bar == PCI_CONFIG_REG_BAR1)
+    c_this->mmio = pci_config_read(pci_addr) & ~0xFFF;
 }
 /*---------------------------------------------------------------------------*/

@@ -33,8 +33,9 @@
 
 #include <stdint.h>
 
-/** PCI configuration register identifier for Base Address Register 0 (BAR0) */
+/** PCI configuration register identifier for Base Address Registers */
 #define PCI_CONFIG_REG_BAR0 0x10
+#define PCI_CONFIG_REG_BAR1 0x14
 
 /**
  * PCI configuration address
@@ -65,6 +66,6 @@ typedef struct pci_driver {
   uintptr_t mmio; /**< MMIO range base address */
 } pci_driver_t;
 
-void pci_init_bar0(pci_driver_t *c_this, pci_config_addr_t pci_addr);
+void pci_init(pci_driver_t *c_this, pci_config_addr_t pci_addr, uint8_t bar);
 
 #endif /* CPU_X86_DRIVERS_LEGACY_PC_PCI_H_ */
