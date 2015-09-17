@@ -33,6 +33,19 @@
 
 #include <stdint.h>
 
+/** PCI command bits */
+#define PCI_CMD_IO_ENABLE     0x001  /* I/O access enable */
+#define PCI_CMD_MEM_ENABLE    0x002  /* memory access enable */
+#define PCI_CMD_MASTER_ENABLE 0x004  /* bus master enable */
+#define PCI_CMD_MON_ENABLE    0x008  /* monitor special cycles enable */
+#define PCI_CMD_WI_ENABLE     0x010  /* write and invalidate enable */
+#define PCI_CMD_SNOOP_ENABLE  0x020  /* palette snoop enable */
+#define PCI_CMD_PERR_ENABLE   0x040  /* parity error enable */
+#define PCI_CMD_WC_ENABLE     0x080  /* wait cycle enable */
+#define PCI_CMD_SERR_ENABLE   0x100  /* system error enable */
+#define PCI_CMD_FBTB_ENABLE   0x200  /* fast back to back enable */
+#define PCI_CMD_INTX_DISABLE  0x400  /* INTx disable */
+
 /** PCI configuration register identifier for Base Address Registers */
 #define PCI_CONFIG_REG_BAR0 0x10
 #define PCI_CONFIG_REG_BAR1 0x14
@@ -66,6 +79,7 @@ typedef struct pci_driver {
   uintptr_t mmio; /**< MMIO range base address */
 } pci_driver_t;
 
+void pci_command_enable(pci_config_addr_t pci_addr, uint32_t flags);
 void pci_init(pci_driver_t *c_this, pci_config_addr_t pci_addr, uint8_t bar);
 
 #endif /* CPU_X86_DRIVERS_LEGACY_PC_PCI_H_ */
