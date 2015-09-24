@@ -62,18 +62,58 @@ pci_config_read(pci_config_addr_t addr)
 }
 /*---------------------------------------------------------------------------*/
 /**
+ * \brief       Write to the specified PCI configuration register.
+ * \param addr  Address of PCI configuration register.
+ * \param value Value to be written on PCI configuration register.
+ */
+void
+pci_config_write(pci_config_addr_t addr, uint32_t value)
+{
+  set_addr(addr);
+
+  outl(PCI_CONFIG_DATA_PORT, value);
+}
+/*---------------------------------------------------------------------------*/
+/**
+ * \brief       Enable PCI command bits of the specified PCI configuration register.
+ * \param addr  Address of PCI configuration register.
+ * \param flags Flags used to enable PCI command bits.
+ */
+void
+pci_command_enable(pci_config_addr_t pci_addr, uint32_t flags)
+{
+  pci_config_addr_t pci;
+  uint32_t pci_data;
+
+  pci.raw = 0;
+  pci.bus = pci_addr.bus;
+  pci.dev = pci_addr.dev;
+  pci.func = pci_addr.func;
+  pci.reg_off = 0x04; /* PCI COMMAND_REGISTER */
+
+  pci_data = pci_config_read(pci);
+
+  pci_data = pci_data | flags;
+
+  pci_config_write(pci, pci_data);
+}
+/*---------------------------------------------------------------------------*/
+/**
  * \brief          Initialize a structure for a PCI device driver that performs
  *                 MMIO to address range 0.  Assumes that device has already
  *                 been configured with an MMIO address range 0, e.g. by
  *                 firmware.
  * \param c_this   Structure that will be initialized to represent the driver.
  * \param pci_addr PCI base address of device.
+ * \param bar      Base Address Register (BAR) address.
  */
 void
-pci_init_bar0(pci_driver_t *c_this, pci_config_addr_t pci_addr)
+pci_init(pci_driver_t *c_this, pci_config_addr_t pci_addr, uint8_t bar)
 {
-  pci_addr.reg_off = PCI_CONFIG_REG_BAR0;
-  /* The BAR0 value is masked to clear non-address bits. */
-  c_this->mmio = pci_config_read(pci_addr) & ~0xFFF;
+  pci_addr.reg_off = bar;
+
+  /* The BAR value is masked to clear non-address bits. */
+  if (bar == PCI_CONFIG_REG_BAR0 || bar == PCI_CONFIG_REG_BAR1)
+    c_this->mmio = pci_config_read(pci_addr) & ~0xFFF;
 }
 /*---------------------------------------------------------------------------*/
