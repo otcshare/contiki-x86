@@ -1,9 +1,10 @@
-CC       = gcc
-LD       = gcc
-AS       = as
-OBJCOPY  = objcopy
-SIZE     = size
-STRIP    = strip
+TOOLCHAIN_PREFIX ?=
+CC       = $(TOOLCHAIN_PREFIX)gcc
+LD       = $(TOOLCHAIN_PREFIX)gcc
+AS       = $(TOOLCHAIN_PREFIX)as
+OBJCOPY  = $(TOOLCHAIN_PREFIX)objcopy
+SIZE     = $(TOOLCHAIN_PREFIX)size
+STRIP    = $(TOOLCHAIN_PREFIX)strip
 
 # Omit exception handling unwind tables (see
 # http://wiki.dwarfstd.org/index.php?title=Exception_Handling).  Removing these
