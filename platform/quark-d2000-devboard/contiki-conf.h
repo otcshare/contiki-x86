@@ -46,6 +46,12 @@ typedef unsigned long clock_time_t;
 typedef uint32_t rtimer_clock_t;
 #define RTIMER_CLOCK_LT(a, b)     ((int32_t)((a) - (b)) < 0)
 
+/* Include the project config */
+/* PROJECT_CONF_H might be defined in the project Makefile */
+#ifdef PROJECT_CONF_H
+#include PROJECT_CONF_H
+#endif /* PROJECT_CONF_H */
+
 /* We define the following macros and types otherwise Contiki does not
  * compile.
  */
