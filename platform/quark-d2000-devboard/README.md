@@ -63,10 +63,10 @@ Before building applications, make sure the BSP components (toolchain and QMSI)
 are properly installed and built.
 
 To download and install the toolchain run the following command. The toolchain
-is installed in platform/quark-d2000-devboard/bsp/ directory. The download can
+is installed in platform/qmsi-common/bsp/ directory. The download can
 take a while.
 ```
-$ ./platform/quark-d2000-devboard/bsp/toolchain/install_toolchain.sh
+$ ./platform/qmsi-common/bsp/toolchain/install_toolchain.sh
 ```
 
 If the toolchain is installed successfully, you should see the output:
@@ -76,7 +76,7 @@ IAMCU toolchain installed successfully.
 
 To download and build QMSI, run the command:
 ```
-$ ./platform/quark-d2000-devboard/bsp/qmsi/build_qmsi.sh
+$ ./platform/qmsi-common/bsp/qmsi/build_qmsi.sh
 ```
 
 If QMSI is built successfully, you should see the output:
@@ -87,7 +87,7 @@ QMSI built successfully.
 Once the BSP components are properly installed and built, we are ready to build
 Contiki applications. Make sure the toolchain binaries are in your PATH:
 ```
-export PATH=<CONTIKI ROOT DIR>/platform/quark-d2000-devboard/bsp/toolchain/iamcu_toolchain_Linux_issm_2016.0.019/tools/compiler/bin:$PATH
+export PATH=<CONTIKI ROOT DIR>/platform/qmsi-common/bsp/toolchain/iamcu_toolchain_Linux_issm_2016.0.019/tools/compiler/bin:$PATH
 ```
 
 In order to build application for this port you should set TARGET variable to

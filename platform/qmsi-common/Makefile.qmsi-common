@@ -1,0 +1,20 @@
+COMMON = $(CONTIKI)/platform/qmsi-common
+
+include $(CONTIKI)/cpu/x86/Makefile.x86_common
+
+QMSI_DIRS += $(QMSI_PATH)/sys
+QMSI_FILES += app_entry.c newlib-syscalls.c
+QMSI_CFLAGS += -DPRINTF_ENABLE
+
+COMMON_DIRS += $(COMMON)/core/sys $(COMMON)/core/dev
+COMMON_FILES += clock.c rtimer-arch.c watchdog.c
+
+CONTIKIDIRS += $(QMSI_DIRS) $(COMMON_DIRS)
+CONTIKIFILES += $(QMSI_FILES) $(COMMON_FILES)
+
+CFLAGS += -m32 -march=lakemont -mtune=lakemont -miamcu -msoft-float
+CFLAGS += $(QMSI_CFLAGS) -I$(LIBQMSI_INCLUDE_DIR)
+LDFLAGS += -m32 -nostdlib
+LDFLAGS += -L$(LIBC_PATH) -L$(LIBGCC_PATH) -L$(LIBQMSI_LIB_DIR)
+
+TARGET_LIBFILES += -lqmsi -lm -lc -lgcc
