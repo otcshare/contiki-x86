@@ -11,10 +11,10 @@ ELF = $(CONTIKI_PROJECT).$(TARGET).elf
 .PHONY: flash flash-firmware debug
 
 flash: $(CONTIKI_PROJECT)
-	$(BSP)/flasher/flasher.sh --flash $(shell pwd)/$(ELF)
+	$(BSP)/flasher/flasher.sh quark_d2000 --flash $(shell pwd)/$(ELF)
 
 flash-firmware: $(FIRMWARE)
-	$(BSP)/flasher/flasher.sh --rom $(shell pwd)/$<
+	$(BSP)/flasher/flasher.sh quark_d2000 --rom $(shell pwd)/$<
 
 debug: $(ELF)
-	$(BSP)/flasher/flasher.sh --debug $(shell pwd)/$<
+	$(BSP)/flasher/flasher.sh quark_d2000 --debug $(shell pwd)/$<

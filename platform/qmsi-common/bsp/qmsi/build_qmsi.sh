@@ -65,6 +65,7 @@ build() {
 
     cd ${SRC_DIR}
     make SOC=quark_d2000 BUILD=release > /dev/null
+    make SOC=quark_se BUILD=release > /dev/null
     cd ..
 }
 

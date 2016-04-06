@@ -26,7 +26,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-# Help script to flash images on Quark D2000.
+# Help script to flash images on Quark D2000 and SE.
 
 set -e
 
@@ -42,7 +42,10 @@ fi
 pushd ${SCRIPT_DIR} &> /dev/null
 
 function usage() {
-    echo "Usage: flasher.sh OPTION [PATH_TO_IMAGE]"
+    echo "Usage: flasher.sh SOC OPTION [PATH_TO_IMAGE]"
+    echo "Available SoCs:"
+    echo "  quark_d2000"
+    echo "  quark_se"
     echo "Available options:"
     echo "  -h|--help       Display this help"
     echo "  -f|--flash      Flash Contiki image. Expects an image as argument (MUST BE ELF IMAGE)"
@@ -51,7 +54,7 @@ function usage() {
 }
 
 function flash() {
-    ${OPENOCD_DIR}/bin/openocd -f ${OPENOCD_DIR}/scripts/board/quark_d2000_onboard.cfg \
+    ${OPENOCD_DIR}/bin/openocd ${OPENOCD_SEARCH_PATH_OPT} ${OPENOCD_CONFIG_FILE_OPT} \
                                -c "init" \
                                -c "reset halt" \
                                -c "$1" \
@@ -76,7 +79,7 @@ function flash_rom() {
         exit 1
     fi
 
-    flash "load_image $1 0x00000000"
+    flash "load_image $1 $ROM_ADDRESS"
 }
 
 function debug_contiki() {
@@ -86,7 +89,7 @@ function debug_contiki() {
         exit 1
     fi
 
-    OPENOCD_CMD="${OPENOCD_DIR}/bin/openocd --pipe --file ${OPENOCD_DIR}/scripts/board/quark_d2000_onboard.cfg"
+    OPENOCD_CMD="${OPENOCD_DIR}/bin/openocd --pipe ${OPENOCD_SEARCH_PATH_OPT} ${OPENOCD_CONFIG_FILE_OPT}"
 
     # Run gdb and connect it to openocd's gdbserver
     ${GDB} -ex "set architecture i386:intel" \
@@ -99,16 +102,34 @@ function debug_contiki() {
 }
 
 case "$1" in
+    quark_d2000)
+        ROM_ADDRESS=0x00000000
+        OPENOCD_CONFIG_FILE_OPT="-f ${OPENOCD_DIR}/scripts/board/quark_d2000_onboard.cfg"
+        ;;
+    quark_se)
+        ROM_ADDRESS=0xffffe000
+        # At the moment, Quark SE configuration files are not distributed by
+        # openocd package so we have to specify the search path.
+        OPENOCD_SEARCH_PATH_OPT="-s ${SCRIPT_DIR}/openocd-scripts"
+        OPENOCD_CONFIG_FILE_OPT="-f board/quark_se_onboard.cfg"
+        ;;
+    *)
+        usage
+        exit
+       ;;
+esac
+
+case "$2" in
     -f|--flash)
-        flash_contiki $2
+        flash_contiki $3
         echo "Contiki image flashed successfully"
         ;;
     -r|--rom)
-        flash_rom $2
+        flash_rom $3
         echo "QMSI ROM firmware flashed successfully"
         ;;
     -d|--debug)
-        debug_contiki $2
+        debug_contiki $3
         ;;
     *)
         usage
