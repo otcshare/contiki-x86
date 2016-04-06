@@ -1,0 +1,6 @@
+include $(CONTIKI)/platform/qmsi-common/Makefile-bsp-qmsi-common
+
+LIBQMSI_INCLUDE_DIR = $(QMSI_PATH)/build/release/quark_se/libqmsi/include
+LIBQMSI_LIB_DIR = $(QMSI_PATH)/build/release/quark_se/libqmsi/lib
+
+FIRMWARE = $(QMSI_PATH)/build/release/quark_se/rom/quark_se_rom.bin

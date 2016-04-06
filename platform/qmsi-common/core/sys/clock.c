@@ -64,7 +64,11 @@ clock_init(void)
   cfg.int_en = true;
   cfg.callback = update_ticks;
 
+#if (HAS_APIC)
+  qm_int_vector_request(QM_INT_VECTOR_PIC_TIMER, qm_pic_timer_isr);
+#else
   qm_irq_request(QM_IRQ_PIC_TIMER, qm_pic_timer_isr);
+#endif
 
   qm_pic_timer_set_config(&cfg);
   qm_pic_timer_set(SYSCLK / CLOCK_CONF_SECOND);
