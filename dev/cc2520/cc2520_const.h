@@ -71,6 +71,8 @@ enum cc2520_address {
   CC2520RAM_SHORTADDR	= 0x3F4,
 };
 
+#define CC2520_FSMSTAT1_SAMPLED_CCA 0x08
+
 // IEEE 802.15.4 defined constants (2.4 GHz logical channels)
 #define MIN_CHANNEL 			            11    // 2405 MHz
 #define MAX_CHANNEL                         26    // 2480 MHz
