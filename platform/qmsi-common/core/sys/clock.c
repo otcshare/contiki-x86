@@ -40,6 +40,11 @@
 /* XXX: We assume the default system clock value (32MHz). */
 #define SYSCLK (32 * 1024 * 1024)
 
+/* Jiffy in milliseconds. We do some twiddling to make sure the jiffy
+ * value is rounded up.
+ */
+#define JIFFY ((1000 + CLOCK_CONF_SECOND - 1) / CLOCK_CONF_SECOND)
+
 static volatile clock_time_t tick_count;
 
 static void
@@ -104,4 +109,23 @@ void
 clock_delay_usec(uint16_t t)
 {
   /* Stubbed function */
+}
+
+/*---------------------------------------------------------------------------*/
+/* Bare in mind that this API is not accurate due to some math rounding.
+ * Moreover, its accuracy depends on the value of CLOCK_CONF_SECOND. If you
+ * are looking for accuracy and low latency, you should take a look at rtimer.
+ */
+void
+clock_delay(unsigned int delay)
+{
+  /* Translate 'delay' to number of system ticks. We do some twiddling
+   * here to make sure the value is rounded up. We do this because we
+   * don't want to delay less time than what the user has required. We
+   * don't bother in taking a little longer.
+   * Warning: 'delay' values close to UINT_MAX may cause overflow.
+   */
+  clock_time_t ticks = (delay + JIFFY - 1) / JIFFY;
+
+  clock_wait(ticks);
 }
