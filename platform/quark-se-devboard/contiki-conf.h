@@ -46,6 +46,12 @@ typedef unsigned long clock_time_t;
 typedef uint32_t rtimer_clock_t;
 #define RTIMER_CLOCK_LT(a, b)     ((int32_t)((a) - (b)) < 0)
 
+/* Contiki uses a bitmap to represent the LEDs from the platform. We
+ * support LEDS_GREEN and LEDS_YELLOW which are bit 0 and 1 by default.
+ * So LEDS_CONF_ALL should be set to 3.
+ */
+#define LEDS_CONF_ALL (3)
+
 /* Include the project config */
 /* PROJECT_CONF_H might be defined in the project Makefile */
 #ifdef PROJECT_CONF_H

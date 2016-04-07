@@ -27,30 +27,56 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "contiki.h"
-#include "dev/watchdog.h"
 #include "dev/leds.h"
 
-int
-main(void)
+#include "qm_gpio.h"
+#include "qm_pinmux.h"
+
+#define GPIO_PIN_GREEN_LED  25
+#define GPIO_PIN_YELLOW_LED 26
+
+static unsigned char leds_state;
+
+void
+leds_arch_init(void)
 {
-  clock_init();
-  rtimer_init();
-  watchdog_init();
-  leds_init();
-  process_init();
+  qm_gpio_port_config_t cfg = { 0 };
 
-  process_start(&etimer_process, NULL);
-  ctimer_init();
+  leds_state = 0;
 
-  watchdog_start();
-  autostart_start(autostart_processes);
+  /* Select GPIO function */
+  qm_pmux_select(QM_PIN_ID_59, QM_PMUX_FN_0);
+  qm_pmux_select(QM_PIN_ID_60, QM_PMUX_FN_0);
 
-  while(1) {
-    watchdog_periodic();
+  /* Set output direction for LED pins */
+  cfg.direction = BIT(GPIO_PIN_GREEN_LED) | BIT(GPIO_PIN_YELLOW_LED);
+  qm_gpio_set_config(QM_GPIO_0, &cfg);
 
-    process_run();
+  /* Turn both LEDs off */
+  qm_gpio_set_pin(QM_GPIO_0, GPIO_PIN_GREEN_LED);
+  qm_gpio_set_pin(QM_GPIO_0, GPIO_PIN_YELLOW_LED);
+}
+/*---------------------------------------------------------------------------*/
+unsigned char
+leds_arch_get(void)
+{
+  return leds_state;
+}
+/*---------------------------------------------------------------------------*/
+void
+leds_arch_set(unsigned char leds)
+{
+  leds_state = leds;
+
+  if(leds & LEDS_GREEN) {
+    qm_gpio_clear_pin(QM_GPIO_0, GPIO_PIN_GREEN_LED);
+  } else {
+    qm_gpio_set_pin(QM_GPIO_0, GPIO_PIN_GREEN_LED);
   }
 
-  return 0;
+  if(leds & LEDS_YELLOW) {
+    qm_gpio_clear_pin(QM_GPIO_0, GPIO_PIN_YELLOW_LED);
+  } else {
+    qm_gpio_set_pin(QM_GPIO_0, GPIO_PIN_YELLOW_LED);
+  }
 }
