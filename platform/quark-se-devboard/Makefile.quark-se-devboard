@@ -3,8 +3,10 @@ include $(CONTIKI)/platform/qmsi-common/Makefile.qmsi-common
 
 QMSI_CFLAGS += -DSTDOUT_UART_1
 
-CONTIKI_TARGET_DIRS += . core/dev
-CONTIKIFILES += contiki-main.c leds-arch.c
+CONTIKI_TARGET_DIRS += . core/dev dev
+CONTIKIFILES += contiki-main.c leds-arch.c cc2520-arch.c cc2520.c
 CONTIKI_TARGET_MAIN = ${addprefix $(OBJECTDIR)/,contiki-main.o}
 
 LDFLAGS += -T $(QMSI_PATH)/soc/quark_se/quark_se.ld
+
+MODULES += core/net/mac core/net core/net/llsec
