@@ -89,16 +89,20 @@ function debug_contiki() {
         exit 1
     fi
 
-    OPENOCD_CMD="${OPENOCD_DIR}/bin/openocd --pipe ${OPENOCD_SEARCH_PATH_OPT} ${OPENOCD_CONFIG_FILE_OPT}"
+    ${OPENOCD_DIR}/bin/openocd ${OPENOCD_SEARCH_PATH_OPT} ${OPENOCD_CONFIG_FILE_OPT} &> /dev/null &
+
+    OPENOCD_PID=$!
 
     # Run gdb and connect it to openocd's gdbserver
     ${GDB} -ex "set architecture i386:intel" \
            -ex "file $1" \
-           -ex "target remote | ${OPENOCD_CMD}" \
+           -ex "target remote localhost:3333" \
            -ex "monitor gdb_breakpoint_override hard" \
            -ex "monitor reset halt" \
            -ex "monitor debug_level 0" \
            -ex "monitor log_output `dirname $1`/LOG_OPENOCD"
+
+    kill ${OPENOCD_PID}
 }
 
 case "$1" in
