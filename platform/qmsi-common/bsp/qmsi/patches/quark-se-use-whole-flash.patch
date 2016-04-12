@@ -1,0 +1,51 @@
+diff --git soc/quark_se/quark_se.ld soc/quark_se/quark_se.ld
+index 35af742..8ae7b61 100644
+--- soc/quark_se/quark_se.ld
++++ soc/quark_se/quark_se.ld
+@@ -31,8 +31,7 @@ ENTRY(_start)
+ 
+ MEMORY
+ {
+-	flash0 (r)	: ORIGIN = 0x40000000, LENGTH = 192K
+-	flash1 (r)	: ORIGIN = 0x40030000, LENGTH = 192K
++	flash (r)	: ORIGIN = 0x40000000, LENGTH = 384K
+ 	/* Place IDT at the bottom of SRAM, 68 gate wide */
+ 	esram_idt (rw)	: ORIGIN = 0xA8000000, LENGTH = 0x220
+ 	esram (rw)	: ORIGIN = 0xA8000220, LENGTH = 80K - 1K - 0x220
+@@ -52,18 +51,18 @@ SECTIONS
+ 		*(.text)
+ 		*(.text.last)
+ 		*(.text.*)
+-	} >flash1
++	} >flash
+ 
+ 	.rodata :
+ 	{
+ 		*(.rdata*)
+ 		*(.rodata*)
+-	} >flash1
++	} >flash
+ 
+ 	.data :
+ 	{
+ 		*(.data*)
+-	} >esram  AT>flash1
++	} >esram  AT>flash
+ 
+ 	.bss :
+ 	{
+diff --git soc/quark_se/rom/rom_startup.c soc/quark_se/rom/rom_startup.c
+index 4c73de4..97ec61a 100644
+--- soc/quark_se/rom/rom_startup.c
++++ soc/quark_se/rom/rom_startup.c
+@@ -34,8 +34,8 @@
+ #include "qm_pinmux.h"
+ #include "qm_scss.h"
+ 
+-/* Address of application's entry point (Flash1) */
+-#define ENTRY_POINT_ADDRESS ((void *)0x40030000)
++/* Address of application's entry point (Flash0) */
++#define ENTRY_POINT_ADDRESS ((void *)0x40000000)
+ 
+ /* Factory settings for Crystal Oscillator */
+ /* 7.45 pF load cap for Crystal */

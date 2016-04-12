@@ -92,15 +92,16 @@ For instance, to flash the hello-world application run the following command:
 $ make flash TARGET=quark-se-devboard -C examples/hello-world/
 ```
 
-Keep in mind this port is based on the default ROM firmware provided by QMSI
-BSP so Contiki applications might not work properly if the ROM firmware is
-customized. If you are flashing a Contiki application for the first time, you
-should flash the ROM firmware to ensure you have the right firmware running on
+Keep in mind this port is based on a custom firmware based on the one provided
+by QMSI BSP. If you are flashing a Contiki application for the first time, you
+must flash the ROM firmware to ensure you have the right firmware running on
 your Quark SE Devboard. To flash the ROM firmware use the 'flash-firmware'
 rule within the application directory.
 ```
 $ make flash-firmware TARGET=quark-se-devboard -C examples/hello-world/
 ```
+
+**Always flash the Contiki application first and then the ROM firmware!**
 
 Console Output
 --------------

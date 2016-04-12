@@ -38,6 +38,7 @@ TARBALL=v${VERSION}.tar.gz
 DIST_SITE=https://github.com/01org/qmsi/archive/
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 BSP_DIR=${SCRIPT_DIR}/..
+PATCH_DIR=${SCRIPT_DIR}/patches
 
 # This script will always run on its own basepath, no matter where you call it from.
 pushd ${SCRIPT_DIR} > /dev/null
@@ -58,6 +59,8 @@ prepare() {
     fi
 
     tar xf ${TARBALL}
+
+    for i in  `ls ${PATCH_DIR}/*.patch`; do patch -d ${SRC_DIR} -p0 < ${i}; done
 }
 
 build() {
