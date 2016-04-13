@@ -35,3 +35,5 @@ else
 		CFLAGS  += -ggdb3
 	endif
 endif
+
+AROPTS = rcs
