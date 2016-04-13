@@ -6,11 +6,12 @@ QMSI_DIRS += $(QMSI_PATH)/sys
 QMSI_FILES += app_entry.c newlib-syscalls.c
 QMSI_CFLAGS += -DPRINTF_ENABLE
 
-COMMON_DIRS += $(COMMON)/core/sys $(COMMON)/core/dev
+COMMON_DIRS += $(COMMON) $(COMMON)/core/sys $(COMMON)/core/dev
 COMMON_FILES += clock.c rtimer-arch.c watchdog.c
 
 CONTIKIDIRS += $(QMSI_DIRS) $(COMMON_DIRS)
 CONTIKIFILES += $(QMSI_FILES) $(COMMON_FILES)
+PROJECT_SOURCEFILES += newlib-syscalls-extra.c
 
 CFLAGS += -m32 -march=lakemont -mtune=lakemont -miamcu -msoft-float
 CFLAGS += $(QMSI_CFLAGS) -I$(LIBQMSI_INCLUDE_DIR)
