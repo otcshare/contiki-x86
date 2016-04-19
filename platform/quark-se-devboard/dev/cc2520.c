@@ -807,10 +807,6 @@ cc2520_read(void *buf, unsigned short bufsize)
 
   RELEASE_LOCK();
 
-  if(len < FOOTER_LEN) {
-    return 0;
-  }
-
   return len - FOOTER_LEN;
 }
 /*---------------------------------------------------------------------------*/
