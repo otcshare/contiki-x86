@@ -1,11 +1,10 @@
 .PRECIOUS: %.co $(PROJECT_OBJECTFILES)
 
 CUSTOM_RULE_LINK = 1
-ELF = $(CONTIKI_PROJECT).$(TARGET).elf
 
 %.$(TARGET): %.co $(PROJECT_OBJECTFILES) $(PROJECT_LIBRARIES) contiki-$(TARGET).a
 	$(TRACE_LD)
 	$(Q)$(LD) $(LDFLAGS) $(TARGET_STARTFILES) ${filter-out %.a,$^} \
-	    ${filter %.a,$^} $(TARGET_LIBFILES) -o $(ELF)
+	    ${filter %.a,$^} $(TARGET_LIBFILES) -o $@
 
-	@$(SIZE) $(ELF)
+	@$(SIZE) $@

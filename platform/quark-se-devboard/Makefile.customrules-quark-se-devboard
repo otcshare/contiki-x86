@@ -3,10 +3,10 @@ include $(CONTIKI)/platform/qmsi-common/Makefile.customrules-qmsi-common
 .PHONY: flash flash-firmware debug
 
 flash: $(CONTIKI_PROJECT)
-	$(BSP)/flasher/flasher.sh quark_se --flash $(shell pwd)/$(ELF)
+	$(BSP)/flasher/flasher.sh quark_se --flash $(shell pwd)/$(CONTIKI_PROJECT).$(TARGET)
 
 flash-firmware: $(FIRMWARE)
 	$(BSP)/flasher/flasher.sh quark_se --rom $(shell pwd)/$<
 
-debug: $(ELF)
-	$(BSP)/flasher/flasher.sh quark_se --debug $(shell pwd)/$<
+debug:
+	$(BSP)/flasher/flasher.sh quark_se --debug $(shell pwd)/$(CONTIKI_PROJECT).$(TARGET)
