@@ -32,6 +32,7 @@
 #include "contiki.h"
 #include "dev/watchdog.h"
 #include "dev/leds.h"
+#include "dev/button-sensor.h"
 #include "cc2520.h"
 
 #include "net/netstack.h"
@@ -45,6 +46,8 @@
 #ifndef NODE_ID
 #define NODE_ID        0x03
 #endif /* NODE_ID */
+
+SENSORS(&button_sensor, &button_sensor2);
 
 /*
  * FIXME(jeez): move all network related code out of this .c file and protect it
@@ -83,6 +86,7 @@ main(void)
   leds_init();
   process_init();
 
+  process_start(&sensors_process, NULL);
   process_start(&etimer_process, NULL);
   ctimer_init();
 
