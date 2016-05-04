@@ -52,43 +52,29 @@ typedef uint32_t rtimer_clock_t;
  */
 #define LEDS_CONF_ALL (3)
 
-#ifndef UIP_CONF_BUFFER_SIZE
 #define UIP_CONF_BUFFER_SIZE              1280
-#endif
 
-#ifndef NETSTACK_CONF_NETWORK
 #if NETSTACK_CONF_WITH_IPV6
 #define NETSTACK_CONF_NETWORK sicslowpan_driver
 #else
 #define NETSTACK_CONF_NETWORK rime_driver
 #endif /* NETSTACK_CONF_WITH_IPV6 */
-#endif /* NETSTACK_CONF_NETWORK */
 
-#ifndef NETSTACK_CONF_MAC
 #define NETSTACK_CONF_MAC     csma_driver
-#endif
 
-#ifndef NETSTACK_CONF_RDC
 #define NETSTACK_CONF_RDC     nullrdc_driver
-#endif
 
 /* Configure NullRDC for when it's selected */
 #define NULLRDC_802154_AUTOACK                  1
 #define NULLRDC_802154_AUTOACK_HW               1
 
-#ifndef NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE
 #define NETSTACK_CONF_RDC_CHANNEL_CHECK_RATE    8
-#endif
 
-#ifndef NETSTACK_CONF_FRAMER
 #define NETSTACK_CONF_FRAMER  framer_802154
-#endif /* NETSTACK_CONF_FRAMER */
 
 #define NETSTACK_CONF_RADIO   cc2520_driver
 
-#ifndef CC2520_CONF_AUTOACK
 #define CC2520_CONF_AUTOACK              1
-#endif /* CC2520_CONF_AUTOACK */
 
 #define RF_CHANNEL 26
 
@@ -102,12 +88,8 @@ typedef uint32_t rtimer_clock_t;
 #define UIP_CONF_ROUTER                 1
 
 /* configure number of neighbors and routes */
-#ifndef NBR_TABLE_CONF_MAX_NEIGHBORS
 #define NBR_TABLE_CONF_MAX_NEIGHBORS     30
-#endif /* NBR_TABLE_CONF_MAX_NEIGHBORS */
-#ifndef UIP_CONF_MAX_ROUTES
 #define UIP_CONF_MAX_ROUTES   30
-#endif /* UIP_CONF_MAX_ROUTES */
 
 #define UIP_CONF_ND6_SEND_NA    0
 #define UIP_CONF_ND6_SEND_RA    0
@@ -115,38 +97,25 @@ typedef uint32_t rtimer_clock_t;
 #define UIP_CONF_ND6_RETRANS_TIMER      10000
 
 #define NETSTACK_CONF_WITH_IPV6                   1
-#ifndef UIP_CONF_IPV6_QUEUE_PKT
 #define UIP_CONF_IPV6_QUEUE_PKT         0
-#endif /* UIP_CONF_IPV6_QUEUE_PKT */
 #define UIP_CONF_IPV6_CHECKS            1
 #define UIP_CONF_IPV6_REASSEMBLY        0
 #define UIP_CONF_NETIF_MAX_ADDRESSES    3
 #define UIP_CONF_IP_FORWARD             0
-#ifndef UIP_CONF_BUFFER_SIZE
-#define UIP_CONF_BUFFER_SIZE    240
-#endif
 
 #define SICSLOWPAN_CONF_COMPRESSION             SICSLOWPAN_COMPRESSION_HC06
-#ifndef SICSLOWPAN_CONF_FRAG
 #define SICSLOWPAN_CONF_FRAG                    1
 #define SICSLOWPAN_CONF_MAXAGE                  8
-#endif /* SICSLOWPAN_CONF_FRAG */
 #define SICSLOWPAN_CONF_MAX_ADDR_CONTEXTS       2
-#ifndef SICSLOWPAN_CONF_MAX_MAC_TRANSMISSIONS
 #define SICSLOWPAN_CONF_MAX_MAC_TRANSMISSIONS   5
-#endif /* SICSLOWPAN_CONF_MAX_MAC_TRANSMISSIONS */
 #else /* NETSTACK_CONF_WITH_IPV6 */
 #define UIP_CONF_IP_FORWARD      1
 #define UIP_CONF_BUFFER_SIZE     108
 #endif /* NETSTACK_CONF_WITH_IPV6 */
 
 #define UIP_CONF_LLH_LEN         0
-#ifndef  UIP_CONF_RECEIVE_WINDOW
 #define UIP_CONF_RECEIVE_WINDOW  48
-#endif
-#ifndef  UIP_CONF_TCP_MSS
 #define UIP_CONF_TCP_MSS         48
-#endif
 #define UIP_CONF_MAX_CONNECTIONS 4
 #define UIP_CONF_MAX_LISTENPORTS 8
 #define UIP_CONF_UDP_CONNS       12
