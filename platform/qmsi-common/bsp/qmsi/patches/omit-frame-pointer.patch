@@ -1,0 +1,13 @@
+diff --git base.mk base.mk
+index ccc2f49..6d5817b 100644
+--- base.mk
++++ base.mk
+@@ -72,7 +72,7 @@ BUILD ?= debug
+ ifeq ($(BUILD), debug)
+ CFLAGS += -O0 -g -DDEBUG
+ else ifeq ($(BUILD), release)
+-CFLAGS += -Os -ffunction-sections -fdata-sections
++CFLAGS += -Os -ffunction-sections -fdata-sections -fomit-frame-pointer
+ LDFLAGS += -Xlinker --gc-sections
+ else
+ $(error Supported BUILD values are 'release' and 'debug')
