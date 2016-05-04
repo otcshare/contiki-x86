@@ -54,11 +54,7 @@ typedef uint32_t rtimer_clock_t;
 
 #define UIP_CONF_BUFFER_SIZE              1280
 
-#if NETSTACK_CONF_WITH_IPV6
 #define NETSTACK_CONF_NETWORK sicslowpan_driver
-#else
-#define NETSTACK_CONF_NETWORK rime_driver
-#endif /* NETSTACK_CONF_WITH_IPV6 */
 
 #define NETSTACK_CONF_MAC     csma_driver
 
@@ -77,8 +73,6 @@ typedef uint32_t rtimer_clock_t;
 #define CC2520_CONF_AUTOACK              1
 
 #define RF_CHANNEL 26
-
-#ifdef NETSTACK_CONF_WITH_IPV6
 
 #define LINKADDR_CONF_SIZE              8
 
@@ -108,10 +102,6 @@ typedef uint32_t rtimer_clock_t;
 #define SICSLOWPAN_CONF_MAXAGE                  8
 #define SICSLOWPAN_CONF_MAX_ADDR_CONTEXTS       2
 #define SICSLOWPAN_CONF_MAX_MAC_TRANSMISSIONS   5
-#else /* NETSTACK_CONF_WITH_IPV6 */
-#define UIP_CONF_IP_FORWARD      1
-#define UIP_CONF_BUFFER_SIZE     108
-#endif /* NETSTACK_CONF_WITH_IPV6 */
 
 #define UIP_CONF_LLH_LEN         0
 #define UIP_CONF_RECEIVE_WINDOW  48

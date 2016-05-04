@@ -39,9 +39,7 @@
 #include "net/mac/frame802154.h"
 #include "net/queuebuf.h"
 
-#if NETSTACK_CONF_WITH_IPV6
 #include "net/ipv6/uip-ds6.h"
-#endif /* NETSTACK_CONF_WITH_IPV6 */
 
 #ifndef NODE_ID
 #define NODE_ID        0x03
@@ -61,13 +59,8 @@ set_node_addr(void)
 
   memset(&n_addr, 0, sizeof(linkaddr_t));
 
-#if NETSTACK_CONF_WITH_IPV6
   n_addr.u8[7] = NODE_ID & 0xff;
   n_addr.u8[6] = NODE_ID >> 8;
-#else
-  n_addr.u8[0] = NODE_ID & 0xff;
-  n_addr.u8[1] = NODE_ID >> 8;
-#endif
 
   linkaddr_set_node_addr(&n_addr);
   printf("Network started with address ");
@@ -117,7 +110,6 @@ main(void)
   }
   cc2520_set_channel(RF_CHANNEL);
 
-#if NETSTACK_CONF_WITH_IPV6
   /* memcpy(&uip_lladdr.addr, ds2411_id, sizeof(uip_lladdr.addr)); */
   memcpy(&uip_lladdr.addr, linkaddr_node_addr.u8,
          UIP_LLADDR_LEN > LINKADDR_SIZE ? LINKADDR_SIZE : UIP_LLADDR_LEN);
@@ -146,7 +138,6 @@ main(void)
     }
     printf("%x%x\n", lladdr->ipaddr.u8[14], lladdr->ipaddr.u8[15]);
   }
-#endif
 
   autostart_start(autostart_processes);
 
