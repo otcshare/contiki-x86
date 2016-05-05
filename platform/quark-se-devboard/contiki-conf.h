@@ -101,7 +101,6 @@ typedef uint32_t rtimer_clock_t;
 #define SICSLOWPAN_CONF_FRAG                    1
 #define SICSLOWPAN_CONF_MAXAGE                  8
 #define SICSLOWPAN_CONF_MAX_ADDR_CONTEXTS       2
-#define SICSLOWPAN_CONF_MAX_MAC_TRANSMISSIONS   5
 
 #define UIP_CONF_LLH_LEN         0
 #define UIP_CONF_RECEIVE_WINDOW  48
