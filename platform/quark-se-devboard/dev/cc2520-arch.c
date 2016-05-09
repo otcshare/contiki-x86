@@ -56,7 +56,6 @@
 #define GPIO_FIFOP       5
 #define GPIO_CCA         6
 #define GPIO_SFD         29
-#define GPIO_CS_PAD      45
 #define GPIO_FIFO_PAD    4
 #define GPIO_FIFOP_PAD   5
 #define GPIO_CCA_PAD     6
