@@ -103,6 +103,13 @@ typedef uint32_t rtimer_clock_t;
 
 #define LINKADDR_CONF_SIZE                      8
 
+/* This macro defines the Node ID which is used to generate the
+ * link address.
+ */
+#ifndef NODE_ID
+#define NODE_ID                                 3
+#endif /* NODE_ID */
+
 /* Include the project config */
 /* PROJECT_CONF_H might be defined in the project Makefile */
 #ifdef PROJECT_CONF_H
