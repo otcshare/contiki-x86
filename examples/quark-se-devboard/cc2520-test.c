@@ -28,7 +28,6 @@
  */
 
 #include "contiki.h"
-#include "lib/random.h"
 #include <stdio.h>
 #include <string.h>
 #include "cc2520.h"
