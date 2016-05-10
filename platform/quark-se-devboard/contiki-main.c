@@ -129,16 +129,13 @@ main(void)
    */
   set_node_addr();
 
-  cc2520_init();
+  netstack_init();
+  queuebuf_init();
+
   setup_radio();
 
   memcpy(&uip_lladdr.addr, linkaddr_node_addr.u8,
          UIP_LLADDR_LEN > LINKADDR_SIZE ? LINKADDR_SIZE : UIP_LLADDR_LEN);
-
-  queuebuf_init();
-  NETSTACK_RDC.init();
-  NETSTACK_MAC.init();
-  NETSTACK_NETWORK.init();
 
   process_start(&tcpip_process, NULL);
 
