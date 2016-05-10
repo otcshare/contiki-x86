@@ -66,6 +66,47 @@ set_node_addr(void)
   printf("%d\n", n_addr.u8[i]);
 }
 /*---------------------------------------------------------------------------*/
+static void
+setup_radio(void)
+{
+  uint8_t longaddr[8];
+  uint16_t shortaddr;
+
+  shortaddr = (linkaddr_node_addr.u8[0] << 8) +
+    linkaddr_node_addr.u8[1];
+  memset(longaddr, 0, sizeof(longaddr));
+  linkaddr_copy((linkaddr_t *)&longaddr, &linkaddr_node_addr);
+
+  printf("MAC %x:%x:%x:%x:%x:%x:%x:%x ",
+         longaddr[0], longaddr[1], longaddr[2], longaddr[3],
+         longaddr[4], longaddr[5], longaddr[6], longaddr[7]);
+
+  cc2520_set_pan_addr(IEEE802154_PANID, shortaddr, longaddr);
+  cc2520_set_channel(RF_CHANNEL);
+
+  printf("%s %s, channel check rate %lu Hz, radio channel %u\n",
+         NETSTACK_MAC.name, NETSTACK_RDC.name,
+         CLOCK_SECOND / (unsigned long)(NETSTACK_RDC.channel_check_interval() == 0 ? 1 :
+                                        NETSTACK_RDC.channel_check_interval()),
+         RF_CHANNEL);
+}
+/*---------------------------------------------------------------------------*/
+static void
+print_link_local_address(void)
+{
+  uip_ds6_addr_t *lladdr;
+  int i;
+
+  printf("Tentative link-local IPv6 address ");
+
+  lladdr = uip_ds6_get_link_local(-1);
+  for(i = 0; i < 7; ++i) {
+    printf("%x%x:", lladdr->ipaddr.u8[i * 2],
+           lladdr->ipaddr.u8[i * 2 + 1]);
+  }
+  printf("%x%x\n", lladdr->ipaddr.u8[14], lladdr->ipaddr.u8[15]);
+}
+/*---------------------------------------------------------------------------*/
 int
 main(void)
 {
@@ -89,22 +130,7 @@ main(void)
   set_node_addr();
 
   cc2520_init();
-  {
-    uint8_t longaddr[8];
-    uint16_t shortaddr;
-
-    shortaddr = (linkaddr_node_addr.u8[0] << 8) +
-      linkaddr_node_addr.u8[1];
-    memset(longaddr, 0, sizeof(longaddr));
-    linkaddr_copy((linkaddr_t *)&longaddr, &linkaddr_node_addr);
-
-    printf("MAC %x:%x:%x:%x:%x:%x:%x:%x ",
-           longaddr[0], longaddr[1], longaddr[2], longaddr[3],
-           longaddr[4], longaddr[5], longaddr[6], longaddr[7]);
-
-    cc2520_set_pan_addr(IEEE802154_PANID, shortaddr, longaddr);
-  }
-  cc2520_set_channel(RF_CHANNEL);
+  setup_radio();
 
   memcpy(&uip_lladdr.addr, linkaddr_node_addr.u8,
          UIP_LLADDR_LEN > LINKADDR_SIZE ? LINKADDR_SIZE : UIP_LLADDR_LEN);
@@ -114,25 +140,9 @@ main(void)
   NETSTACK_MAC.init();
   NETSTACK_NETWORK.init();
 
-  printf("%s %s, channel check rate %lu Hz, radio channel %u\n",
-         NETSTACK_MAC.name, NETSTACK_RDC.name,
-         CLOCK_SECOND / (unsigned long)(NETSTACK_RDC.channel_check_interval() == 0 ? 1 :
-                                        NETSTACK_RDC.channel_check_interval()),
-         RF_CHANNEL);
-
   process_start(&tcpip_process, NULL);
 
-  printf("Tentative link-local IPv6 address ");
-  {
-    uip_ds6_addr_t *lladdr;
-    int i;
-    lladdr = uip_ds6_get_link_local(-1);
-    for(i = 0; i < 7; ++i) {
-      printf("%x%x:", lladdr->ipaddr.u8[i * 2],
-             lladdr->ipaddr.u8[i * 2 + 1]);
-    }
-    printf("%x%x\n", lladdr->ipaddr.u8[14], lladdr->ipaddr.u8[15]);
-  }
+  print_link_local_address();
 
   autostart_start(autostart_processes);
 
