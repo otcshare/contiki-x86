@@ -106,7 +106,6 @@ main(void)
   }
   cc2520_set_channel(RF_CHANNEL);
 
-  /* memcpy(&uip_lladdr.addr, ds2411_id, sizeof(uip_lladdr.addr)); */
   memcpy(&uip_lladdr.addr, linkaddr_node_addr.u8,
          UIP_LLADDR_LEN > LINKADDR_SIZE ? LINKADDR_SIZE : UIP_LLADDR_LEN);
 
